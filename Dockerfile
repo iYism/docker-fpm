@@ -22,9 +22,9 @@ WORKDIR ${BUILD_DIR}
 
 RUN set -x \
 # Install development packages
-    && dnf5 install -y dnf-plugins-core \
-    && dnf5 config-manager --enable devel \
-    && dnf5 install -y make gcc gcc-c++ zlib-devel readline-devel \
+    && dnf install -y dnf-plugins-core \
+    && dnf config-manager --enable devel \
+    && dnf install -y make gcc gcc-c++ zlib-devel readline-devel \
         openssl-devel libffi-devel libyaml-devel \
 # Install ruby
     && curl -LO --output-dir ${BUILD_DIR} https://cache.ruby-lang.org/pub/ruby/3.4/ruby-${RUBY_VERSION}.tar.gz \
@@ -51,8 +51,8 @@ ENV PATH=$HOME_DIR/bin:$PATH
 
 RUN set -x \
 # Install required packages
-    && dnf5 install -y openssl libyaml libffi rpm-build \
-    && dnf5 clean all \
+    && microdnf install -y openssl libyaml libffi rpm-build \
+    && microdnf clean all \
 # Install fpm
     && gem install fpm -v ${FPM_VERSION} --no-document
 
