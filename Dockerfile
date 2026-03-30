@@ -5,7 +5,7 @@ ARG BUILD_DIR=/tmp/.build.ruby
 
 
 # Build Stage
-FROM rockylinux:10 AS builder
+FROM rockylinux/rockylinux:10 AS builder
 LABEL maintainer="iYism <admin@iyism.com>"
 
 # Component versions
@@ -36,7 +36,7 @@ RUN set -x \
 
 
 # Runtime Stage
-FROM rockylinux:10-minimal
+FROM rockylinux/rockylinux:10-minimal
 
 # Component versions
 ENV FPM_VERSION  1.17.0
