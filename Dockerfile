@@ -9,7 +9,7 @@ FROM rockylinux:9 AS builder
 LABEL maintainer="iYism <admin@iyism.com>"
 
 # Component versions
-ENV RUBY_VERSION  3.2.6
+ENV RUBY_VERSION  3.4.9
 
 # Set environment variables for the build stage
 ARG HOME_DIR\
@@ -46,7 +46,7 @@ RUN set -x \
 FROM rockylinux:9-minimal
 
 # Component versions
-ENV FPM_VERSION   1.16.0
+ENV FPM_VERSION  1.17.0
 
 # Set environment variables for the runtime stage
 ARG HOME_DIR
