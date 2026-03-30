@@ -27,7 +27,7 @@ RUN set -x \
     && dnf install -y make gcc gcc-c++ zlib-devel readline-devel \
         openssl-devel libffi-devel libyaml-devel \
 # Install ruby
-    && curl -LO --output-dir ${BUILD_DIR} https://cache.ruby-lang.org/pub/ruby/3.2/ruby-${RUBY_VERSION}.tar.gz \
+    && curl -LO --output-dir ${BUILD_DIR} https://cache.ruby-lang.org/pub/ruby/3.4/ruby-${RUBY_VERSION}.tar.gz \
     && tar zxf ruby-${RUBY_VERSION}.tar.gz \
     && cd ruby-${RUBY_VERSION} \
     && ./configure --prefix=${HOME_DIR} --disable-install-doc \
