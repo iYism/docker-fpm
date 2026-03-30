@@ -36,5 +36,5 @@ jobs:
             --platform linux/amd64,linux/arm64 \
             --push \
             -t sungyism/fpm:latest \
-            -t sungyism/fpm:${{ vars.BUILD_VERSION }}-rockylinux-9 \
+            -t sungyism/fpm:${{ vars.BUILD_VERSION }}-rockylinux-10 \
             .

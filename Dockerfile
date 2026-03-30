@@ -1,11 +1,11 @@
 # Dockerfile - FPM
 
-ARG HOME_DIR=/opt/ruby32
+ARG HOME_DIR=/opt/ruby34
 ARG BUILD_DIR=/tmp/.build.ruby
 
 
 # Build Stage
-FROM rockylinux:9 AS builder
+FROM rockylinux:10 AS builder
 LABEL maintainer="iYism <admin@iyism.com>"
 
 # Component versions
@@ -22,9 +22,9 @@ WORKDIR ${BUILD_DIR}
 
 RUN set -x \
 # Install development packages
-    && dnf install -y dnf-plugins-core \
-    && dnf config-manager --enable devel \
-    && dnf install -y make gcc gcc-c++ zlib-devel readline-devel \
+    && dnf5 install -y dnf-plugins-core \
+    && dnf5 config-manager --enable devel \
+    && dnf5 install -y make gcc gcc-c++ zlib-devel readline-devel \
         openssl-devel libffi-devel libyaml-devel \
 # Install ruby
     && curl -LO --output-dir ${BUILD_DIR} https://cache.ruby-lang.org/pub/ruby/3.4/ruby-${RUBY_VERSION}.tar.gz \
@@ -32,18 +32,11 @@ RUN set -x \
     && cd ruby-${RUBY_VERSION} \
     && ./configure --prefix=${HOME_DIR} --disable-install-doc \
     && make -j`nproc` \
-    && make install \
-# Clean tmpdata
-    && cd ${HOME_DIR} \
-    && rm -fr ${BUILD_DIR} \
-    && dnf config-manager --disable devel \
-    && dnf remove -y make gcc gcc-c++ zlib-devel readline-devel \
-        openssl-devel libffi-devel libyaml-devel \
-    && dnf clean all
+    && make install
 
 
 # Runtime Stage
-FROM rockylinux:9-minimal
+FROM rockylinux:10-minimal
 
 # Component versions
 ENV FPM_VERSION  1.17.0
@@ -57,10 +50,10 @@ COPY --from=builder ${HOME_DIR} ${HOME_DIR}
 ENV PATH=$HOME_DIR/bin:$PATH
 
 RUN set -x \
-# Install fpm
-    && gem install fpm -v ${FPM_VERSION} --no-document \
 # Install required packages
-    && microdnf install -y rpm-build \
-    && microdnf clean all
+    && dnf5 install -y openssl libyaml libffi rpm-build \
+    && dnf5 clean all \
+# Install fpm
+    && gem install fpm -v ${FPM_VERSION} --no-document
 
 CMD ["fpm", "-v"]
